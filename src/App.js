@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
-
+import Greeting from "./Greeting";
+import GenerateListItems from "./GenerateListItems";
+import { usestate, useRef, useState } from "react";
 function App() {
+  const [itemList, setItemList] = useState([]);
+  const userInput = useRef();
+
+  function addItems() {
+    const acceptUserInput = userInput.current.value;
+
+    setItemList((prevState) => {
+      return [
+        ...prevState,
+        {
+          name: acceptUserInput,
+        },
+      ];
+    });
+
+    userInput.current.value = null;
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Shopping List</h1>
+      <Greeting name="Caleb" />
+      <h4>List</h4>
+      <label>Add item:</label>
+      <input type="text" ref={userInput} />
+      <button onClick={addItems}>Add</button>
+      <GenerateListItems listOfItems={itemList} />
     </div>
   );
 }
